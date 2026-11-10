@@ -1,11 +1,12 @@
 {
   "printWidth": 100,
   "singleQuote": true,
+  "plugins": ["prettier-plugin-astro"],
   "overrides": [
     {
-      "files": "*.html",
+      "files": "*.astro",
       "options": {
-        "parser": "angular"
+        "parser": "astro"
       }
     }
   ]

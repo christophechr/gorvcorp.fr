@@ -1,21 +1,47 @@
-# GorvCorp — draft Angular
+# GorvCorp — Astro
 
-Page d’accueil responsive inspirée de `DESIGN.md`, réalisée avec Angular 22 et des composants standalone.
+Page d’accueil responsive inspirée de `DESIGN.md`, réalisée avec Astro. Le HTML est généré au build ; les interactions utilisent du TypeScript léger côté navigateur.
 
 ## Démarrage
 
+Utiliser une version compatible de Node.js (au minimum 22.23.4) et npm 10.9.8. Docker utilise Node.js 24 LTS. Le fichier `.nvmrc` sélectionne également Node.js 24 si `nvm` est installé (`nvm install`, puis `nvm use`) ; `nvm` n’est pas obligatoire.
+
+Sur macOS Apple Silicon, si une version compatible est déjà installée via Homebrew mais que `node --version` affiche une ancienne version, sélectionner le Node de Homebrew dans le terminal courant :
+
 ```sh
-npm install
+export PATH="/opt/homebrew/opt/node/bin:$PATH"
+node --version
+```
+
+```sh
+npm ci
 npm start
 ```
 
-Ouvrir http://localhost:4200.
+Ouvrir http://localhost:4321.
 
 ```sh
+npm run check
 npm run build
+npm run preview
 ```
 
-La version de production est générée dans `dist/gorvcorp/browser`.
+La version de production est générée dans `dist/`. `npm run build` vérifie les types avant de générer le site. `npm run preview` permet de vérifier ce résultat localement.
+
+- `src/pages/index.astro` : page d’accueil et contenu.
+- `src/layouts/Layout.astro` : document HTML, métadonnées et styles globaux.
+- `src/styles/home.css` : styles responsive de la page.
+- `src/scripts/home.ts` : menu mobile, formulaire et initialisation du lecteur Twitch.
+- `public/` : images copiées telles quelles dans le build.
+
+## Vérification
+
+```sh
+npx playwright install chromium
+npm test
+```
+
+Les tests lancent le build de production puis vérifient le rendu statique, le menu mobile, le formulaire et les paramètres du lecteur Twitch. La réponse Twitch est isolée dans les tests ; la lecture du flux reste à vérifier sur le domaine HTTPS de production.
 
 ## Périmètre du draft
 
@@ -25,11 +51,25 @@ La version de production est générée dans `dist/gorvcorp/browser`.
 - Le formulaire simule la validation et affiche explicitement qu’aucun message n’est envoyé. Aucun backend ni stockage de données personnelles.
 - Le statut Twitch n’est pas simulé : seul le rendez-vous du vendredi est annoncé, en heure de Paris.
 - Les liens Discord/YouTube et les pages juridiques sont à ajouter lorsque leurs destinations officielles seront fournies.
-- Photos d’illustration Unsplash et police Google Fonts chargées à distance, à remplacer ou héberger localement avant production.
+- Image d’illustration Unsplash hébergée dans `src/assets/gaming-arena.jpg` (source : `https://images.unsplash.com/photo-1542751371-adc38448a05e`), optimisée en AVIF/WebP par Astro ; visuel LoL également optimisé. Police Plus Jakarta Sans auto-hébergée via Fontsource (licence OFL incluse dans le package).
+
+## Référencement naturel
+
+Le domaine canonique est `https://www.gorvcorp.fr/`, conformément à `DESIGN.md`. Pour changer de domaine, modifier `site` dans `astro.config.mjs`, puis reconstruire l’image : les URL canoniques, le sitemap, `robots.txt` et les données structurées utilisent cette valeur.
+
+- Métadonnées françaises, Open Graph et carte Twitter/X avec le logo officiel.
+- Données structurées JSON-LD `Organization`, `WebSite` et `WebPage`, limitées aux informations présentes sur le site.
+- Sitemap généré automatiquement à `/sitemap-index.xml`, déclaré dans `/robots.txt` ; la page 404 en est exclue.
+- Vraies réponses HTTP 404 dans Nginx, page d’erreur `noindex` et redirection permanente de `/index.html` vers `/`.
+- Images responsives avec dimensions explicites, image principale chargée en priorité, police locale préchargée, compression gzip et cache long pour les ressources avec empreinte dans `/_astro/`.
+
+Les tests `npm test` vérifient aussi ces métadonnées dans le HTML sans JavaScript, le sitemap, les erreurs 404 et les ressources locales. Les en-têtes Nginx s’appliquent à l’image Docker, pas au serveur de développement Astro.
+
+Après publication : configurer HTTPS et les redirections du domaine sans `www` et de HTTP vers `https://www.gorvcorp.fr/` sur le reverse proxy du VPS ; vérifier le domaine dans Google Search Console et soumettre `/sitemap-index.xml`. Protéger les environnements de préproduction par authentification ou un en-tête `X-Robots-Tag: noindex`. Mesurer ensuite les Core Web Vitals sur le domaine public. Aucun classement ni délai d’indexation n’est garanti.
 
 ## Docker et publication automatique
 
-Chaque push sur `main` construit l’application Angular en production et publie son image Nginx sur GitHub Container Registry :
+Chaque push sur `main` construit le site Astro en production et publie son image Nginx sur GitHub Container Registry :
 
 - `ghcr.io/christophechr/gorvcorpintratest:latest`
 - `ghcr.io/christophechr/gorvcorpintratest:build-<numéro de run>.<tentative>`
@@ -41,7 +81,7 @@ docker build -t gorvcorp:local .
 docker run --rm -p 8080:80 gorvcorp:local
 ```
 
-Ouvrir http://localhost:8080. L’image sert le front-end CSR existant et expose `/healthz` pour vérifier son état.
+Ouvrir http://localhost:8080. L’image sert le HTML statique généré par Astro et expose `/healthz` pour vérifier son état.
 
 Pour utiliser l’image publiée :
 

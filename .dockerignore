@@ -2,7 +2,7 @@
 .github
 node_modules
 dist
-.angular
+.astro
 .vscode
 .env
 .env.*

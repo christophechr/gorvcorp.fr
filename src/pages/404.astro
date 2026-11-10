@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page introuvable — GorvCorp"
+  description="Cette page n’existe pas. Retrouvez l’équipe League of Legends, la WebTV et le recrutement sur l’accueil GorvCorp."
+  noindex
+>
+  <main>
+    <a href="/" aria-label="GorvCorp, accueil">
+      <img src="/gc-logo.webp" alt="" width="96" height="96" />
+    </a>
+    <p>ERREUR 404</p>
+    <h1>Page introuvable.</h1>
+    <p>Cette page n’existe pas ou a été déplacée.</p>
+    <a class="back" href="/">
+      Retour à l’accueil GorvCorp →
+    </a>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 680px;
+    margin: 10vh auto;
+    padding: 24px;
+  }
+  img {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 32px;
+    object-fit: contain;
+  }
+  h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    margin-block: 12px;
+  }
+  p {
+    color: var(--muted);
+  }
+  .back {
+    display: inline-block;
+    color: var(--cyan);
+    margin-top: 32px;
+  }
+</style>

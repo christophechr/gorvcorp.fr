@@ -1,0 +1,98 @@
+---
+import '../styles.css';
+import '@fontsource-variable/plus-jakarta-sans';
+import latinFont from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'GorvCorp — League of Legends & communauté esport',
+  description = 'GorvCorp, collectif esport francophone depuis 2019 : équipe League of Legends, recrutement et WebTV Twitch chaque vendredi dès 22h, heure de Paris.',
+  noindex = false,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site!);
+const home = new URL('/', Astro.site!).href;
+const logo = new URL('/gc-logo.png', Astro.site!).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${home}#organization`,
+      name: 'GorvCorp',
+      url: home,
+      description,
+      foundingDate: '2019',
+      logo: { '@type': 'ImageObject', url: logo, width: 741, height: 741 },
+      sameAs: ['https://x.com/Gorvcorp', 'https://www.twitch.tv/GorvCorptv'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#website`,
+      name: 'GorvCorp',
+      url: home,
+      inLanguage: 'fr-FR',
+      publisher: { '@id': `${home}#organization` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical.href}#webpage`,
+      url: canonical.href,
+      name: title,
+      description,
+      inLanguage: 'fr-FR',
+      isPartOf: { '@id': `${home}#website` },
+      about: { '@id': `${home}#organization` },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/webp" href="/gc-logo.webp" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b1120" />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}
+    />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="preload" href={latinFont} as="font" type="font/woff2" crossorigin="anonymous" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="GorvCorp" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {!noindex && <meta property="og:url" content={canonical.href} />}
+    <meta property="og:image" content={logo} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="741" />
+    <meta property="og:image:height" content="741" />
+    <meta property="og:image:alt" content="Logo GorvCorp, collectif League of Legends" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@Gorvcorp" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={logo} />
+    <meta name="twitter:image:alt" content="Logo GorvCorp, collectif League of Legends" />
+    {!noindex && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')}
+      />
+    )}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,385 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/home.css';
+import { Image, Picture } from 'astro:assets';
+import heroImage from '../assets/gaming-arena.jpg';
+import lineupImage from '../assets/lec-draft-g2-kc.jpg';
+import logoImage from '../assets/gc-logo.webp';
+
+const lineups = [
+  {
+    number: '01',
+    name: 'League of Legends',
+    tag: 'LOL · ÉQUIPE · COMPÉTITION',
+    description: 'La Faille de l’invocateur. Un collectif. La même envie de progresser.',
+    image: lineupImage,
+    imageAlt:
+      'Coachs et sélection des champions lors du match League of Legends G2 contre Karmine Corp en LEC',
+  },
+];
+---
+
+<Layout>
+  <a class="skip-link" href="#main">
+    Aller au contenu
+  </a>
+  <header>
+    <a class="brand" href="#accueil" aria-label="GorvCorp, le collectif depuis 2019 — accueil">
+      <Image
+        class="brand-logo"
+        src={logoImage}
+        alt=""
+        width={66}
+        height={66}
+        widths={[66, 132, 198]}
+        sizes="(max-width: 700px) 54px, 66px"
+      />
+      <span>
+        GORV<span class="brand-light">CORP</span>
+        <small>LE COLLECTIF DEPUIS 2019</small>
+      </span>
+    </a>
+    <nav id="main-navigation" aria-label="Navigation principale">
+      <a href="#accueil">Accueil</a>
+      <a href="#equipe">Notre équipe</a>
+      <a href="#webtv">WebTV</a>
+      <a href="#recrutement">Recrutement</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="discord button outline" href="#contact" data-contact-subject="Autre">
+      Rejoindre l’aventure <span>↗</span>
+    </a>
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-controls="main-navigation"
+      aria-expanded="false"
+      aria-label="Ouvrir ou fermer le menu"
+    >
+      ☰
+    </button>
+  </header>
+  <main id="main">
+    <section class="hero" id="accueil">
+      <div class="hero-image">
+        <Picture
+          src={heroImage}
+          alt="Installation gaming dans une salle de compétition"
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[640, 960, 1440, 2000]}
+          sizes="100vw"
+          quality={75}
+          priority
+        />
+      </div>
+      <div class="hero-content wrap">
+        <p class="eyebrow">
+          <span class="dash"></span> LEAGUE OF LEGENDS. UNE MÊME FAMILLE.
+        </p>
+        <h1>
+          Bienvenue dans
+          <br />
+          la <span>GorvCorp.</span>
+        </h1>
+        <p class="hero-description">
+          Depuis 2019, la GorvCorp rassemble un collectif avec la même envie de jouer ensemble.
+          Aujourd’hui, on se concentre uniquement sur League of Legends.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#equipe">
+            Découvrir notre équipe <span>↗</span>
+          </a>
+          <a class="text-link" href="#recrutement">
+            Rejoindre l’aventure <span>→</span>
+          </a>
+        </div>
+        <div class="hero-note">
+          <span class="small-symbol">✳</span> Sérieux dans le jeu. Un peu moins ailleurs.
+        </div>
+      </div>
+      <div class="hero-bottom wrap">
+        <span>LA CORPORATION VOUS SOUHAITE LA BIENVENUE</span>
+        <a href="#equipe">
+          SCROLL POUR DÉCOUVRIR <span>↓</span>
+        </a>
+      </div>
+      <span class="hero-watermark" aria-hidden="true">
+        GORV
+      </span>
+    </section>
+    <aside class="schedule">
+      <div class="wrap schedule-inner">
+        <div>
+          <span class="gold-dot"></span>
+          <strong>LE RENDEZ-VOUS DU VENDREDI</strong>
+          <span class="schedule-detail">La WebTV GorvCorp · dès 22h00, heure de Paris</span>
+        </div>
+        <a href="#webtv">
+          On se retrouve en live <span>↗</span>
+        </a>
+      </div>
+    </aside>
+    <section class="section wrap" id="equipe">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / LE COLLECTIF</p>
+          <h2>
+            League of Legends.
+            <br />
+            Un seul état d’esprit.
+          </h2>
+        </div>
+        <p>
+          Sur la Faille de l’invocateur, on avance ensemble.
+          <br />
+          Découvrez notre collectif LoL.
+        </p>
+      </div>
+      <div class="lineups">
+        {lineups.map((lineup) => (
+          <a class="lineup" href="#contact" data-contact-subject="Candidature">
+            <div class="lineup-image">
+              <Image
+                src={lineup.image}
+                alt={lineup.imageAlt}
+                format="webp"
+                widths={[400, 750]}
+                sizes="(max-width: 700px) calc(100vw - 44px), (max-width: 1050px) calc(100vw - 60px), (max-width: 1352px) calc(100vw - 112px), 1240px"
+                loading="lazy"
+              />
+              <span class="lineup-number">{lineup.number}</span>
+              <span class="image-arrow">↗</span>
+            </div>
+            <p class="eyebrow">{lineup.tag}</p>
+            <h3>{lineup.name}</h3>
+            <p>{lineup.description}</p>
+          </a>
+        ))}
+      </div>
+      <div class="team-bottom">
+        <span>Une place pour chaque talent. Même derrière la caméra.</span>
+        <a class="text-link" href="#contact" data-contact-subject="Candidature">
+          Rejoindre la WebTV & les casters <span>→</span>
+        </a>
+      </div>
+    </section>
+    <section class="tv-section" id="webtv">
+      <div class="wrap tv-grid">
+        <div class="tv-art">
+          <iframe
+            class="twitch-player"
+            title="Lecteur Twitch de GorvCorp TV"
+            width="100%"
+            height="100%"
+            loading="lazy"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+          ></iframe>
+          <p class="twitch-mobile-fallback">
+            Pour regarder le live sur ce petit écran,
+            <a href="https://twitch.tv/GorvCorptv" target="_blank" rel="noopener noreferrer">
+              ouvrir GorvCorp TV sur Twitch ↗
+            </a>
+            .
+          </p>
+        </div>
+        <div class="tv-copy">
+          <p class="eyebrow">02 / LA WEBTV</p>
+          <h2>
+            La semaine se termine.
+            <br />
+            Le live commence.
+          </h2>
+          <p>
+            Le vendredi soir, on se retrouve autour de League of Legends. Du jeu, des débats sans
+            filtre et surtout, vous.
+          </p>
+          <ul>
+            <li>Un plateau League of Legends interactif</li>
+            <li>La communauté prend la parole</li>
+            <li>Du jeu, des débats et des giveaways</li>
+          </ul>
+          <a
+            class="button primary"
+            href="https://twitch.tv/GorvCorptv"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Regarder sur Twitch <span>↗</span>
+          </a>
+          <small>Chaque vendredi dès 22h00 · heure de Paris</small>
+        </div>
+      </div>
+    </section>
+    <section class="section wrap recruitment" id="recrutement">
+      <div>
+        <p class="eyebrow">03 / REJOINDRE LES RANGS</p>
+        <h2>
+          Votre prochain collectif
+          <br />
+          est peut-être <span>ici.</span>
+        </h2>
+        <p>
+          Du talent, de l’engagement et l’envie de jouer ensemble.
+          <br />
+          Le reste, on le construit avec vous.
+        </p>
+        <a class="button primary" href="#contact" data-contact-subject="Candidature">
+          Déposer ma candidature <span>↗</span>
+        </a>
+      </div>
+      <div class="recruitment-details">
+        <div>
+          <span>01</span>
+          <p>
+            <strong>Vous nous racontez votre parcours.</strong>Votre rôle sur LoL, vos ambitions,
+            vos disponibilités.
+          </p>
+        </div>
+        <div>
+          <span>02</span>
+          <p>
+            <strong>On examine votre candidature.</strong>Par le directoire, sous 48h. Sans
+            sous-traitance.
+          </p>
+        </div>
+        <div>
+          <span>03</span>
+          <p>
+            <strong>On fait connaissance en jeu.</strong>Le collectif commence par une vraie
+            rencontre.
+          </p>
+        </div>
+        <blockquote>
+          « Comme cette personne qui n’existe pas (vous pouvez vérifier), rejoignez-nous ! »
+          <cite>— L’Individu Lambda</cite>
+        </blockquote>
+      </div>
+    </section>
+    <section class="contact-section" id="contact">
+      <div class="wrap contact-grid">
+        <div>
+          <p class="eyebrow">04 / ON EN PARLE ?</p>
+          <h2>
+            Le début d’une
+            <br />
+            bonne conversation.
+          </h2>
+          <p>
+            Une candidature, un projet, une idée un peu folle ?<br />
+            Le directoire vous écoute.
+          </p>
+          <div class="social-links">
+            <a href="https://x.com/Gorvcorp" target="_blank" rel="noopener noreferrer">
+              Twitter / X <span>↗</span>
+            </a>
+            <a href="https://twitch.tv/GorvCorptv" target="_blank" rel="noopener noreferrer">
+              Twitch <span>↗</span>
+            </a>
+          </div>
+          <small class="draft-note">Prototype front-end · les messages ne sont pas envoyés.</small>
+        </div>
+        <form id="contact-form">
+          <div class="form-row">
+            <label>
+              Nom ou pseudo
+              <input
+                name="name"
+                placeholder="L’Individu Lambda"
+                required
+                autocomplete="name"
+                maxlength="100"
+              />
+            </label>
+            <label>
+              Adresse e-mail
+              <input
+                name="email"
+                type="email"
+                placeholder="vous@exemple.fr"
+                required
+                autocomplete="email"
+              />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Objet du message
+              <select name="subject">
+                <option>Candidature</option>
+                <option>Partenariat</option>
+                <option>Autre</option>
+              </select>
+            </label>
+            <label>
+              Téléphone <span class="optional">(facultatif)</span>
+              <input name="phone" type="tel" placeholder="06 00 00 00 00" autocomplete="tel" />
+            </label>
+          </div>
+          <label>
+            Votre message
+            <textarea
+              name="message"
+              rows="4"
+              placeholder="Parlez-nous de vous et de votre projet…"
+              required
+              minlength="10"
+              maxlength="5000"
+            ></textarea>
+          </label>
+          <div class="form-bottom">
+            <span>Les champs sans mention sont obligatoires.</span>
+            <button class="button primary" type="submit" disabled>
+              Envoyer le message <span>↗</span>
+            </button>
+          </div>
+          <p class="form-status" role="status" hidden>
+            Votre message est prêt. Ce prototype n’est pas encore connecté à un service d’envoi.
+          </p>
+          <noscript>
+            <p class="form-status">
+              Activez JavaScript pour essayer ce formulaire de démonstration. Aucun message ne sera
+              envoyé.
+            </p>
+          </noscript>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer class="wrap">
+    <a class="brand" href="#accueil">
+      <Image
+        class="brand-logo"
+        src={logoImage}
+        alt=""
+        width={66}
+        height={66}
+        widths={[66, 132, 198]}
+        sizes="55px"
+        loading="lazy"
+      />
+      <span>
+        GORV<span class="brand-light">CORP</span>
+      </span>
+    </a>
+    <p>
+      Les internets depuis 2019.
+      <br />
+      Le collectif, pour longtemps.
+    </p>
+    <div>
+      <a href="#equipe">Équipe LoL</a>
+      <a href="#webtv">WebTV</a>
+      <a href="#recrutement">Tryouts</a>
+    </div>
+    <small>
+      © 2019–2026 GorvCorp.
+      <br />
+      Tous droits réservés.
+    </small>
+  </footer>
+  <script>
+    import '../scripts/home';
+  </script>
+</Layout>

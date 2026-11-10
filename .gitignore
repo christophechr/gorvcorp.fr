@@ -3,8 +3,7 @@
 # Compiled output
 /dist
 /tmp
-/out-tsc
-/bazel-out
+/.astro
 
 # Node
 /node_modules
@@ -30,10 +29,11 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
+/test-results
+/playwright-report
 /libpeerconnection.log
 testem.log
 /typings
